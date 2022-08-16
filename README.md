@@ -89,4 +89,10 @@ created:
 ```
 - COMMIT all changes, but not push them;
 - PUSH the app from heroku to master: `git push heroku[destiny] master[local_from]`
-- TEST if the deploy has been successful by clicking 
+- TEST if the deploy has been successful by clicking on the link provided:
+```
+remote:        https://ramos-rr-django.herokuapp.com/ deployed to Heroku
+```
+<br>
+
+5.
