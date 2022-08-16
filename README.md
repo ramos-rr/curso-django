@@ -64,22 +64,24 @@ a. There's a need to implement alias, since the file `.bash_profile` couldn't be
 a file named `mng.bat` inside `.venv/Scripts`.<br>
 <br>
 3. INSTALLING HEROKU
-- Install HEROKU for WIN64;
+- Install HEROKU for WIN64;<br>
 - Activate through cmdlet `heroku login`
 <br><br>
-4. UPLOADING FIRST THING ONLINE
-- Change `settings.py <from> ALLOWED_HOSTS = [] <to> ALLOWED_HOSTS = ['0']`
-- Create `Procfile` in main root. Edit it: `web: gunicorn pypro.wsgi --log-file -`
-- Install GUNICORN with PIPENV to make it a basic requerement: `pipenv install gunicorn`
+4. UPLOADING FIRST THING ONLINE<br>
+- Change `settings.py <from> ALLOWED_HOSTS = [] <to> ALLOWED_HOSTS = ['0']`<br>
+- Create `Procfile` in main root. Edit it: `web: gunicorn pypro.wsgi --log-file -`<br>
+- Install GUNICORN with PIPENV to make it a basic requerement: `pipenv install gunicorn`<br>
 - Create an APP with heroku: `heroku apps: create [app_name]ramos-rr-django`. Notice that heroku will return as 
-followed:
+followed:<br>
 ```
     (curso-django) PS C:\Users\rafae\PycharmProjects\curso-django> heroku apps:create ramos-rr-django
     Creating ⬢ ramos-rr-django... done
     https://ramos-rr-django.herokuapp.com/ | https://git.heroku.com/ramos-rr-django.git
 ```
+<br>
+
 - After that, you can investigate git by using `git remote -v`, and you'll see a new repository that has just been 
-created:
+created:<br>
 ```
     (curso-django) PS C:\Users\rafae\PycharmProjects\curso-django> git remote -v
     heroku  https://git.heroku.com/ramos-rr-django.git (fetch)
@@ -87,6 +89,14 @@ created:
     origin  https://github.com/ramos-rr/curso-django.git (fetch)
     origin  https://github.com/ramos-rr/curso-django.git (push)
 ```
-- COMMIT all changes, but not push them;
-- PUSH the app from heroku to master: `git push heroku[destiny] master[local_from]`
-- TEST if the deploy has been successful by clicking 
+<br>
+
+- COMMIT all changes, but not push them;<br>
+- PUSH the app from heroku to master: `git push heroku[destiny] master[local_from]`<br>
+- TEST if the deploy has been successful by clicking on the link provided:<br>
+```
+remote:        https://ramos-rr-django.herokuapp.com/ deployed to Heroku
+```
+<br>
+
+5.f
