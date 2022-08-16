@@ -71,4 +71,22 @@ a file named `mng.bat` inside `.venv/Scripts`.<br>
 - Change `settings.py <from> ALLOWED_HOSTS = [] <to> ALLOWED_HOSTS = ['0']`
 - Create `Procfile` in main root. Edit it: `web: gunicorn pypro.wsgi --log-file -`
 - Install GUNICORN with PIPENV to make it a basic requerement: `pipenv install gunicorn`
-- 
+- Create an APP with heroku: `heroku apps: create [app_name]ramos-rr-django`. Notice that heroku will return as 
+followed:
+```
+    (curso-django) PS C:\Users\rafae\PycharmProjects\curso-django> heroku apps:create ramos-rr-django
+    Creating ⬢ ramos-rr-django... done
+    https://ramos-rr-django.herokuapp.com/ | https://git.heroku.com/ramos-rr-django.git
+```
+- After that, you can investigate git by using `git remote -v`, and you'll see a new repository that has just been 
+created:
+```
+    (curso-django) PS C:\Users\rafae\PycharmProjects\curso-django> git remote -v
+    heroku  https://git.heroku.com/ramos-rr-django.git (fetch)
+    heroku  https://git.heroku.com/ramos-rr-django.git (push)
+    origin  https://github.com/ramos-rr/curso-django.git (fetch)
+    origin  https://github.com/ramos-rr/curso-django.git (push)
+```
+- COMMIT all changes, but not push them;
+- PUSH the app from heroku to master: `git push heroku[destiny] master[local_from]`
+- TEST if the deploy has been successful by clicking 
