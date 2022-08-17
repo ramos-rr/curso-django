@@ -104,4 +104,14 @@ more team member.</strong><br>
 5.1. First, login to [heroko website](https://id.heroku.com/);<br>
 5.2. Then, access you application and go to " Deploy " window;<br>
 5.3. Certify to pick Github as main connection, indicanting your repository address;<br>
-5.4. Enable <i>AUTOMATIC DEPLOY</i>
+5.4. Enable <i>AUTOMATIC DEPLOY</i><br>
+<br>
+6. RUN DJANGO SERVER IN PYCHARM<br>
+<b>Comments:</b> By doing this, you can debug an executing code.<br>
+   1. At the top of the screen, there's a litle box, with the Python logo inside, appointing to the actual server that 
+   is being used. Click edit, and inside RUN/DEBUG CONFIGURATION, Add a new one, by selectin Python as MAIN, then rename
+   the unknown to DJANGO. Continue by indicating the path (selec MANAGE.PY from your project). Finally, as 
+   <i>PARAMETER</i> type "_runserver_". Apply the changes.<br>
+      1. <b>Note that this new settings will appear above as a RUN OPTION</b><br>
+<br>
+7. 
