@@ -7,10 +7,9 @@ Python doesn't have pipenv already installed, and finally order `pipenv install`
 `.venv` folder (within project's files) your Virtual Environment.
 - Never forget about all dependencies that the projetc may have. Thus, order the cmd `pipenv sync` and/or `pipenv sync -d`
 in order to install all requerements needed.
-
+<br><br>
 2. STARTING A PROJETC WITH DJANGO-ADMIN
-- Type `django-admin startproject pypro[proj_name] .[place_to_root_file_manage.py]` (_the DOT indicates projetc root 
-folder_)
+- Type `django-admin startproject pypro[proj_name] .[place_to_root_file_manage.py]` (_the DOT indicates projetc's rootfolder_)
 - To get MANAGE.PY, type in terminal `python manage.py --help`:
 ````
 Type 'manage.py help <subcommand>' for help on a specific subcommand.
@@ -80,7 +79,7 @@ followed:<br>
 ```
 <br>
 
-- After that, you can investigate git by using `git remote -v`, and you'll see a new repository that has just been 
+- After that, you can investigate Git by using `git remote -v`, and you'll see a new repository that has just been 
 created:<br>
 ```
     (curso-django) PS C:\Users\rafae\PycharmProjects\curso-django> git remote -v
@@ -99,4 +98,10 @@ remote:        https://ramos-rr-django.herokuapp.com/ deployed to Heroku
 ```
 <br>
 
-5.f
+5. AUTOMATIC DEPLOY<br>
+<strong>Comments: The idea here is to avoid different versions of the same application, mostly when it comes to be developed by two or
+more team member.</strong><br>
+5.1. First, login to [heroko website](https://id.heroku.com/);<br>
+5.2. Then, access you application and go to " Deploy " window;<br>
+5.3. Certify to pick Github as main connection, indicanting your repository address;<br>
+5.4. Enable <i>AUTOMATIC DEPLOY</i>
