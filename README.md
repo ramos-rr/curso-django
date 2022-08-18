@@ -116,12 +116,12 @@ the unknown to DJANGO. Continue by indicating the path (selec MANAGE.PY from you
 <b>Note that this new settings will appear above as a RUN OPTION</b><br>
 <br><br>
 7. UPLOAD FIRST HOME TO DJANGO SERVER<br>
-7.1. FIRST: in the terminal, go to the app_folder (Created in Item 2.), then run `manage.py startapp base[app_name]`.
+- FIRST: in the terminal, go to the app_folder (Created in Item 2.), then run `manage.py startapp base[app_name]`.
 Attention! You need to create inside the project that you've set up with DJANGO!.<br>
 <br>
 <strong> Don't forget to use alias to call `manage.py` from the rootfolder</strong><br>
 <br>
-7.2. EDIT `view.py` inside this brandnew app's folder. The VIEW.PY is responsable to answer all requests coming from 
+- EDIT `view.py` inside this brandnew app's folder. The VIEW.PY is responsable to answer all requests coming from 
    browsers:<br>
 ```
    <local> view.py
@@ -133,31 +133,30 @@ Attention! You need to create inside the project that you've set up with DJANGO!
 ```
 <br>
 
-7.3. EDIT `apps.py` in app's files, to change its name:<br>
+- EDIT `apps.py` in app's files, to change its name:<br>
 ```
    class BaseConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     # name = 'base' # OLD NAME
     name = 'pypro.base'
 ```
-7.4. TELL `settings.py` (stored in django-project's files) ~~that you have an APP READY to go 
+- TELL `settings.py` (stored in django-project's files) ~~that you have an APP READY to go 
 online:<br>
 APPEND IN `INSTALLED_APPS = []` your app's path, e.g., `INSTALLED_APPS = [..., 'pypro.base']`<br>
-7.5. MAP in `urls.py` (stored in django-project's files) that function created inside view.py file: 
+- MAP in `urls.py` (stored in django-project's files) that function created inside view.py file: 
 `urlpatterns = [path('', home),]`. Because `home` is a function, you get to import it this way: `from pypro.base.views import home`<br>
-7.6. RUN IT<br>
+- RUN IT<br>
 <br>
 8. PYTEST-DJANGO<br>
-Comments: Once of the most important enhencement one can provide is to make sure everything is testable. So, lets 
-implement <i>pytest-django</i> plugin using pipenv in the terminal: `$ pipenv install 'pytest-django'`.<br>
+<b>Comments: Once of the most important enhencement one can provide is to make sure everything is testable. So, lets 
+implement <i>pytest-django</i> plugin using pipenv in the terminal: `$ pipenv install 'pytest-django'`.<br></b>
 - SET UP PYTEST by creating a file named `pytest.ini` inside the project main root files:
 ```
 <file> pytest.ini
 [pytest]
 DJANGO_SETTINGS_MODULE = pypro.settings  # Necessary indicate where setings.py is locatede 
 ```
-<br>
-<b>
+<br><b>
 - CREATE TEST FOLDER INSIDE THE APP FOLDER</b>: `~/curso-django/pypro/base/tests`
 - DEFINE A TEST (Read all commentaries below):
 
