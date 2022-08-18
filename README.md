@@ -172,5 +172,31 @@ def test_status_code(client: Client):
     return resp.status_code == 200  # Code 200 refers to a successful result
 ```
 <br>
-<br>
-9. IMPLEMENT GITHUB ACTION TO RUN AUTOTESTS
+
+9. IMPLEMENT GITHUB ACTION TO RUN AUTOTESTS<br>
+<b>Comments: Since TRAVIS has not been used in face of its fees, CI was implemented using GITHUB ACTIONS<br></b>
+<br> 
+
+10. DECOUPLE<br>
+<b>Comments: To avoid your website giving more information than necessary to outsiders, it worth it to use the library 
+PYTHON-DECOUPLE</b>. Therefore, locally you can leave DEBUG=True to help you track down any error during the development
+process<br>
+- IMPORT the library: `pipenv install 'python-decouple'`;<br>
+- EDIT `settings.py` from project, and create a variable to informe whether DEBUG is True or False.<br>
+<b>NOTE: it is necessary to give 2 parameters for the function " _config(name: str; cast=boll)_ " to properly work!</b><br>
+```
+from decouple import config
+
+DEBUG = config('DEBUG', cast=bool)  # First parameter = <name: Str> / Second parameter = <cast=bool> to transform to bool
+```
+- CREATE `.env` file in localroot, because in case of not having a BOOLEAN indicated for DEBUG, it will search for this
+`.env` file looking for a valid boolean value;<br>
+- TYPE `DEBUG=False`
+- HIDE the file `.env` from GIT repository (for security reasons);<br>
+- Cast a sample instead: `/config/env-sample` (a copy). This way, in order for CI to test, there will be an obligation 
+to add a new STEP transforming this sample in an online temporary `.env` file:<br>
+````<example>
+step:
+    name: Create .env
+    run: cp contrib/env-sample .env
+````

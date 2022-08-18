@@ -13,6 +13,7 @@ flake8 = "*"
 pytest = "*"
 pytest-cov = "*"
 codecov = "*"
+python-decouple = "*"
 
 [requires]
 python_version = "3.10"
