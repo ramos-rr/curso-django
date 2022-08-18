@@ -5,8 +5,4 @@ from django.http import HttpResponse
 
 
 def home(request):
-    return HttpResponse('Helo Django')
-
-
-def introduce(request):
-    return HttpResponse('My name is Rafael')
+    return HttpResponse('Helo Django, this is amazing!!')
