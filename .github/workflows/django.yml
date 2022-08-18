@@ -32,6 +32,4 @@ jobs:
 #     - name: Create .env file
 #       run: cp contrib/env-sample .env
     - name: Run Tests
-      run: |
-        flake8
-        pytest pypro
+      run: pytest pypro
