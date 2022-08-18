@@ -105,42 +105,70 @@ more team member.</strong><br>
 5.2. Then, access you application and go to " Deploy " window;<br>
 5.3. Certify to pick Github as main connection, indicanting your repository address;<br>
 5.4. Enable <i>AUTOMATIC DEPLOY</i><br>
-<br>
+<br><br>
 6. RUN DJANGO SERVER IN PYCHARM<br>
-<b>Comments:</b> By doing this, you can debug an executing code.<br>
-   1. At the top of the screen, there's a litle box, with the Python logo inside, appointing to the actual server that 
-   is being used. Click edit, and inside RUN/DEBUG CONFIGURATION, Add a new one, by selecting Python as MAIN, then rename
-   the unknown to DJANGO. Continue by indicating the path (selec MANAGE.PY from your project). Finally, as 
-   <i>PARAMETER</i> type "_runserver_". Apply the changes.<br>
-      1. <b>Note that this new settings will appear above as a RUN OPTION</b><br>
+<b>Comments: By doing this, you can debug an executing code.</b><br>
+6.1. At the top of the screen, there's a litle box, with the Python logo inside, appointing to the actual server that 
+is being used. Click edit, and inside RUN/DEBUG CONFIGURATION, Add a new one, by selecting Python as MAIN, then rename
+the unknown to DJANGO. Continue by indicating the path (selec MANAGE.PY from your project). Finally, as 
+<i>PARAMETER</i> type "_runserver_". Apply the changes.<br>
 <br>
+<b>Note that this new settings will appear above as a RUN OPTION</b><br>
+<br><br>
 7. UPLOAD FIRST HOME TO DJANGO SERVER<br>
-   1. FIRST: in the terminal, go to the app_folder (Created in Item 2.), then run `manage.py startapp base[app_name]`.
-   Attention! You need to create inside the project that you've set up with DJANGO!<br>.
-   <strong> Don't forget to use alias to call
-   `manage.py` from the rootfolder</strong><br>
-   2. EDIT `view.py` inside this brandnew app's folder. The VIEW.PY is responsable to answer all requests coming from 
+7.1. FIRST: in the terminal, go to the app_folder (Created in Item 2.), then run `manage.py startapp base[app_name]`.
+Attention! You need to create inside the project that you've set up with DJANGO!.<br>
+<br>
+<strong> Don't forget to use alias to call `manage.py` from the rootfolder</strong><br>
+<br>
+7.2. EDIT `view.py` inside this brandnew app's folder. The VIEW.PY is responsable to answer all requests coming from 
    browsers:<br>
-   ```
+```
    <local> view.py
    from django.http import HttpResponse
    
    def home(request):
        return HttpResponse('Helo Django!')
    
-   ```
-   <br><br>
-   3. EDIT `apps.py` in app's files, to change its name:<br>
-   ```
+```
+<br>
+
+7.3. EDIT `apps.py` in app's files, to change its name:<br>
+```
    class BaseConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     # name = 'base' # OLD NAME
     name = 'pypro.base'
-   ```
-   4. TELL `settings.py` (stored in django-project's files) ~~that you have an APP READY to go 
-   online:<br> APPEND IN `INSTALLED_APPS = []` your app's path, e.g., `INSTALLED_APPS = [..., 'pypro.base']`<br>
-   5. MAP in `urls.py` (stored in django-project's files) that function created inside view.py file: 
-   `urlpatterns = [path('', home),]`. Because `home` is a function, you get to import it this way: `from pypro.base.views import home`<br>
-   6. RUN IT<br>
+```
+7.4. TELL `settings.py` (stored in django-project's files) ~~that you have an APP READY to go 
+online:<br>
+APPEND IN `INSTALLED_APPS = []` your app's path, e.g., `INSTALLED_APPS = [..., 'pypro.base']`<br>
+7.5. MAP in `urls.py` (stored in django-project's files) that function created inside view.py file: 
+`urlpatterns = [path('', home),]`. Because `home` is a function, you get to import it this way: `from pypro.base.views import home`<br>
+7.6. RUN IT<br>
+<br>
+8. PYTEST-DJANGO<br>
+Comments: Once of the most important enhencement one can provide is to make sure everything is testable. So, lets 
+implement <i>pytest-django</i> plugin using pipenv in the terminal: `$ pipenv install 'pytest-django'`.<br>
+- SET UP PYTEST by creating a file named `pytest.ini` inside the project main root files:
+````
+<file> pytest.ini
+[pytest]
+DJANGO_SETTINGS_MODULE = pypro.settings  # Necessary indicate where setings.py is locatede 
+````
+<br><b>
+- CREATE TEST FOLDER INSIDE THE APP FOLDER</b>: `~/curso-django/pypro/base/tests`
+- DEFINE A TEST (Read all commentaries below):
+````
+from django.test import Client
+
+
+# client is a fixture provided by django.test. It emulates HTTP requests so it is not necessary to use real requests
+def test_status_code(client: Client):
+    # Now, we use a call of GET type to call our VIEW.PY, which is based inside app root folder
+    # use '/' to address ROOT
+    resp = client.get('/')
+    return resp.status_code == 200  # Code 200 refers to a successful result
+````
    
 
