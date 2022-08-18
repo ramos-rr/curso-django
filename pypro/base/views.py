@@ -6,3 +6,7 @@ from django.http import HttpResponse
 
 def home(request):
     return HttpResponse('Helo Django')
+
+
+def introduce(request):
+    return HttpResponse('My name is Rafael')
