@@ -27,6 +27,8 @@ jobs:
       run: |
         pipenv install -d
         pipenv sync
+    - name: Check library
+      run: pipenv graph
 #     - name: Create .env file
 #       run: cp contrib/env-sample .env
     - name: Run Tests
