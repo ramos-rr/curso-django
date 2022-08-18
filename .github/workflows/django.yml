@@ -27,13 +27,15 @@ jobs:
       run: |
         pipenv install -d
         pipenv sync
-    - name: Check library
-      run: pipenv graph
+    - name: Checkup with flake8
+      run: pipenv run flake8
 #     - name: Create .env file
 #       run: cp contrib/env-sample .env
+
+#     Run tests
     - name: Run Tests
       run: pipenv run pytest pypro
       
-    # Checkout with pytest-cov
+#     Checkout with pytest-cov
     - name: See coverage
       run: pipenv run pytest --cov pypro
