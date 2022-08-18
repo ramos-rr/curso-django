@@ -171,5 +171,6 @@ def test_status_code(client: Client):
     resp = client.get('/')
     return resp.status_code == 200  # Code 200 refers to a successful result
 ```
-   
-
+<br>
+<br>
+9. IMPLEMENT GITHUB ACTION TO RUN AUTOTESTS
