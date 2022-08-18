@@ -33,3 +33,7 @@ jobs:
 #       run: cp contrib/env-sample .env
     - name: Run Tests
       run: pipenv run pytest pypro
+      
+    # Checkout with pytest-cov
+    - name: See coverage
+      run: pipenv run pytest --cov pypro
