@@ -27,5 +27,5 @@ jobs:
       run: pipenv sync
     - name: Run Tests
       run: |
-        python pipenv run flake8
-        python pipenv run pytest --cov=pypro
+        pipenv run flake8
+        pipenv run pytest --cov=pypro
