@@ -30,4 +30,4 @@ jobs:
     - name: Run Tests
       run: |
         pipenv run flake8
-        pipenv run pytest --cov=pypro
+        pipenv run pytest --cov
