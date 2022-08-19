@@ -294,7 +294,7 @@ to the subdomain in order to reach it:
 ```
 - Now, paste `xxxxxxxxxxxxxxxx.herokudns.com` inside host.
 - EDIT `settings.py` and `.env`, ALLOWED HOSTS to limit which hosts are allowed to access it. Use decouple plugin to indicate the list
-of allowed hosts for your website:
+of allowed hosts for your website. <strong> THIS PROCEDURE IS TO ALLOW WORK LOCALLY:
 ```
 <file> settings.py
 from decouple import config, Csv
@@ -304,3 +304,17 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 <file> .env
 ALLOWED_HOSTS=localholst, 127.0.0.1:8000/
 ```
+
+- FINALLY, UPDATE HEROKU LIST OF ALLOWED_HOSTS, otherwise, it will return BAD REQUEST:<br>
+
+```
+<terminal> $ heroku domains
+>> === ramos-rr-django Heroku Domain
+>> ramos-rr-django.herokuapp.com  # COPY
+<terminal> $ heroku config:set ALLOWED_HOSTS='ramos-rr-django.herokuapp.com'
+>> Setting ALLOWED_HOSTS and restarting ⬢ ramos-rr-django... done, v50
+>> ALLOWED_HOSTS: ramos-rr-django.herokuapp.com
+```
+
+- RUN BOTH SERVIDORS<br>
+- 
