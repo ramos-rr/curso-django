@@ -21,8 +21,11 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Install Pipenv
+      run: python -m pip install pipenv
+    
     - name: Install flake8
-      run: python -m pip install flake8
+      run: pipenv install flake8
 
     - name: Checkup with flake8
-      run: flake8
+      run: pipenv run flake8
