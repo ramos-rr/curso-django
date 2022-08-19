@@ -26,4 +26,4 @@ jobs:
       run: python -m pip install flake8
 
     - name: Checkup with flake8
-      run: flake8 --exclude= .\pypro\base\admin.py, .\pypro\base\models.py, .\pypro\base\tests.py, .\pypro\base\views.py
+      run: flake8 --exclude= ./pypro/base/admin.py, ./pypro/base/models.py, ./pypro/base/tests.py, ./pypro/base/views.py
