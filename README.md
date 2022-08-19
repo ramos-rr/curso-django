@@ -121,15 +121,17 @@ Attention! You need to create inside the project that you've set up with DJANGO!
 <br>
 <strong> Don't forget to use alias to call `manage.py` from the rootfolder</strong><br>
 <br>
+
 - EDIT `view.py` inside this brandnew app's folder. The VIEW.PY is responsable to answer all requests coming from 
-   browsers:<br>
+   browsers:
+<br>
+
 ```
-   <local> view.py
-   from django.http import HttpResponse
+<local> view.py
+from django.http import HttpResponse
    
-   def home(request):
-       return HttpResponse('Helo Django!')
-   
+def home(request):
+    return HttpResponse('Helo Django!')
 ```
 <br>
 
