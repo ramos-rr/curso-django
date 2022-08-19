@@ -67,9 +67,9 @@ Available subcommands:
 - Activate through cmdlet `heroku login`
 <br><br>
 4. UPLOADING FIRST THING ONLINE<br>
-- Change `settings.py <from> ALLOWED_HOSTS = [] <to> ALLOWED_HOSTS = ['0']`<br>
-- Create `Procfile` in main root. Edit it: `web: gunicorn pypro.wsgi --log-file -`<br>
-- Install GUNICORN with PIPENV to make it a basic requerement: `pipenv install gunicorn`<br>
+- Change `settings.py <from> ALLOWED_HOSTS = [] <to> ALLOWED_HOSTS = ['0']`. This way, every HOST is allowed<br>
+- Create `Procfile` in main root. Edit it: `web: gunicorn pypro.wsgi --log-file -`. It serves to indicate heroku the WSGI to use `<br>
+- Install GUNICORN with PIPENV to make it a basic requerement: `pipenv install gunicorn`, that's part of WISG mentioned above<br>
 - Create an APP with heroku: `heroku apps: create [app_name]ramos-rr-django`. Notice that heroku will return as 
 followed:<br>
 ```
@@ -79,8 +79,11 @@ followed:<br>
 ```
 <br>
 
+<strong>ATTENTION: It is possible that an error occurs regarding COLLECTSTATIC. Thus, simply type what heroku tells
+you to:</strong> `DISABLE_COLLECTSTATIC=1`. IT SHOULD FIX IT
+
 - After that, you can investigate Git by using `git remote -v`, and you'll see a new repository that has just been 
-created:<br>
+created inside heroku's github:<br>
 ```
  (curso-django) PS C:\Users\rafae\PycharmProjects\curso-django> git remote -v
  heroku  https://git.heroku.com/ramos-rr-django.git (fetch)
@@ -90,8 +93,8 @@ created:<br>
 ```
 <br>
 
-- COMMIT all changes, but not push them;<br>
-- PUSH the app from heroku to master: `git push heroku[destiny] master[local_from]`<br>
+- COMMIT all changes, but not push them yet;<br>
+- PUSH the app from heroku to master: `git push heroku[heroku_origin] master[main_remote]`<br>
 - TEST if the deploy has been successful by clicking on the link provided:<br>
 ```
 remote:        https://ramos-rr-django.herokuapp.com/ deployed to Heroku
@@ -110,7 +113,7 @@ more team member.</strong><br>
 <b>Comments: By doing this, you can debug an executing code.</b><br>
 6.1. At the top of the screen, there's a litle box, with the Python logo inside, appointing to the actual server that 
 is being used. Click edit, and inside RUN/DEBUG CONFIGURATION, Add a new one, by selecting Python as MAIN, then rename
-the unknown to DJANGO. Continue by indicating the path (selec MANAGE.PY from your project). Finally, as 
+the unknown to DJANGO (or as desired). Continue by indicating the path (select MANAGE.PY from your project). Finally, as 
 <i>PARAMETER</i> type "_runserver_". Apply the changes.<br>
 <br>
 <b>Note that this new settings will appear above as a RUN OPTION</b><br>
@@ -119,17 +122,19 @@ the unknown to DJANGO. Continue by indicating the path (selec MANAGE.PY from you
 - FIRST: in the terminal, go to the app_folder (Created in Item 2.), then run `manage.py startapp base[app_name]`.
 Attention! You need to create inside the project that you've set up with DJANGO!.<br>
 <br>
-<strong> Don't forget to use alias to call `manage.py` from the rootfolder</strong><br>
+<strong> Don't forget to use alias to call `manage.py` from root files</strong><br>
 <br>
+
 - EDIT `view.py` inside this brandnew app's folder. The VIEW.PY is responsable to answer all requests coming from 
-   browsers:<br>
+   browsers:
+<br>
+
 ```
-   <local> view.py
-   from django.http import HttpResponse
+<local> view.py
+from django.http import HttpResponse
    
-   def home(request):
-       return HttpResponse('Helo Django!')
-   
+def home(request):
+    return HttpResponse('Helo Django!')
 ```
 <br>
 
@@ -144,7 +149,7 @@ Attention! You need to create inside the project that you've set up with DJANGO!
 online:<br>
 APPEND IN `INSTALLED_APPS = []` your app's path, e.g., `INSTALLED_APPS = [..., 'pypro.base']`<br>
 - MAP in `urls.py` (stored in django-project's files) that function created inside view.py file: 
-`urlpatterns = [path('', home),]`. Because `home` is a function, you get to import it this way: `from pypro.base.views import home`<br>
+`urlpatterns = [path('', home),]`. Because `home` is a function, you have to rightly import: `from pypro.base.views import home`<br>
 - RUN IT<br>
 <br>
 8. PYTEST-DJANGO<br>
@@ -174,16 +179,16 @@ def test_status_code(client: Client):
 <br>
 
 9. IMPLEMENT GITHUB ACTION TO RUN AUTOTESTS<br>
-<b>Comments: Since TRAVIS has not been used in face of its fees, CI was implemented using GITHUB ACTIONS<br></b>
+<b>Comments: Since TRAVIS has not been used due to its fees, CI was implemented using GITHUB ACTIONS<br></b>
 <br> 
 
 10. DECOUPLE<br>
 <b>Comments: To avoid your website giving more information than necessary to outsiders, it worth it to use the library 
 PYTHON-DECOUPLE</b>. Therefore, locally you can leave DEBUG=True to help you track down any error during the development
 process<br>
-- IMPORT the library: `pipenv install 'python-decouple'`;<br>
+- IMPORT the library: `$ pipenv install 'python-decouple'`;<br>
 - EDIT `settings.py` from project, and create a variable to informe whether DEBUG is True or False.<br>
-<b>NOTE: it is necessary to give 2 parameters for the function " _config(name: str; cast=boll)_ " to properly work!</b><br>
+<b>NOTE: it is necessary to give 2 parameters for the function " _config(name: str; cast=boll)_ " to work!</b><br>
 ```
 from decouple import config
 
@@ -192,7 +197,7 @@ DEBUG = config('DEBUG', cast=bool)  # First parameter = <name: Str> / Second par
 - CREATE `.env` file in localroot, because in case of not having a BOOLEAN indicated for DEBUG, it will search for this
 `.env` file looking for a valid boolean value;<br>
 - TYPE `DEBUG=False`
-- HIDE the file `.env` from GIT repository (for security reasons);<br>
+- HIDE the file `.env` from GIT repository (for security reasons) using `.gitignore`;<br>
 - Cast a sample instead: `/config/env-sample` (a copy). This way, in order for CI to test, there will be an obligation 
 to add a new STEP transforming this sample in an online temporary `.env` file:<br>
 ````<example>
@@ -217,3 +222,8 @@ You’re seeing this error because you have DEBUG = True in your Django settings
 Not Found
 The requested resource was not found on this server.
 ````
+<br>
+
+11. SECRET KEY SETTING<br>
+COMMENT: A secret key serves as a cryptograph value for sign in sessions, messages, password reset, and on;<br>
+- 
