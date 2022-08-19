@@ -9,8 +9,19 @@ Python doesn't have pipenv already installed, and finally order `pipenv install`
 in order to install all requerements needed.
 <br><br>
 2. STARTING A PROJETC WITH DJANGO-ADMIN
-- Type `django-admin startproject pypro[proj_name] .[place_to_root_file_manage.py]` (_the DOT indicates projetc's rootfolder_)
-- To get MANAGE.PY, type in terminal `python manage.py --help`:
+- Type `django-admin startproject pypro[proj_name] .[place_to_root_file_manage.py]` (_the DOT indicates projetc's rootfolder_)<br>
+- See that the django project must have been created where it was supposed to with the followed structure:<br>
+
+```
+<python_project_root>/<django_project_root>:
+1. __init__.py
+2. asgi.py
+3. settings.py
+4. urls.py
+5. wsgi.py
+```
+- To get MANAGE.PY, type in terminal `python manage.py --help`:<br>
+
 ````
 Type 'manage.py help <subcommand>' for help on a specific subcommand.
 
@@ -121,9 +132,19 @@ the unknown to DJANGO (or as desired). Continue by indicating the path (select M
 7. UPLOAD FIRST HOME TO DJANGO SERVER<br>
 - FIRST: in the terminal, go to the app_folder (Created in Item 2.), then run `manage.py startapp base[app_name]`.
 Attention! You need to create inside the project that you've set up with DJANGO!.<br>
+<strong> Don't forget to use alias to call `manage.py` from root files</strong>
 <br>
-<strong> Don't forget to use alias to call `manage.py` from root files</strong><br>
-<br>
+- See that the application folder will be created as followed:<br>
+
+```
+<python_project_root>/<django_project_root>/<app_name>:
+1. /migrations
+2. __init__.py
+3. admin.py
+4. apps.py
+5. models.py
+6. views.py
+```
 
 - EDIT `view.py` inside this brandnew app's folder. The VIEW.PY is responsable to answer all requests coming from 
    browsers:
