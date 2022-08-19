@@ -268,3 +268,39 @@ SECRET_KEY:            <secret_key>
 ```
 <br>
 
+12. DOMAIN AND ALLOWED HOSTS<br>
+- DOMAIN is you website address. Allways check up before cast a domain to avoid an already existing domain: [REGISTRO.BR](https://registro.br).
+Remember that DOMAIN is just the final part of an web address, e.g. `pythonpro.com.br`.
+- IF AVALIABLE, you can purchase it directly from a HOST that is going to manage this DOMAIN. Hosts example: [DreamHost](https://www.dreamhost.com/),
+[Hostinger](https://www.hostinger.com.br/).
+- SUBDOMAIN: `www` is the most famous subdomain. It allways comes first than the DOMAIN. Generally, you can pick your own
+subdomain;<br>
+- DNS means _Domain Name Server_ that each domain has. You can set a subdomain for your domain by telling SERVER which new
+DNS you created:
+```
+DNS TYPE CNAME - You copy/paste a Subdomain DNS providor to the domain DNS provider. This way, the main domain provider correctly points
+to the subdomain in order to reach it:
+    Example:
+        >>> Input
+        <using_heroku_to_add_new_subdomai> $ heroku domains:add django.pythonpro.com.br
+        
+        >>> Output
+        Adding django.pythonpro.com.br to ...<old domain>...
+        ► Configure your app's DNS provider to point to the DNS Target xxxxxxxxxxxxxxxx.herokudns.com,
+        ► For help, see https:/devcenter.heroku.com/articles/custom-domains
+        
+        The domain django.pythonpro.com.br has been enqueued for addition
+        ► Run heroku domain:wait 'django.pythonpro.com.br' to wait for completion
+```
+- Now, paste `xxxxxxxxxxxxxxxx.herokudns.com` inside host.
+- EDIT `settings.py` and `.env`, ALLOWED HOSTS to limit which hosts are allowed to access it. Use decouple plugin to indicate the list
+of allowed hosts for your website:
+```
+<file> settings.py
+from decouple import config, Csv
+
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
+
+<file> .env
+ALLOWED_HOSTS=localholst, 127.0.0.1:8000/
+```
