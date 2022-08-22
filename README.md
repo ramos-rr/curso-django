@@ -20,6 +20,7 @@ in order to install all requerements needed.
 4. urls.py
 5. wsgi.py
 ```
+
 - To get MANAGE.PY, type in terminal `python manage.py --help`:<br>
 
 ````
@@ -294,7 +295,7 @@ to the subdomain in order to reach it:
 ```
 - Now, paste `xxxxxxxxxxxxxxxx.herokudns.com` inside host.
 - EDIT `settings.py` and `.env`, ALLOWED HOSTS to limit which hosts are allowed to access it. Use decouple plugin to indicate the list
-of allowed hosts for your website. <strong> THIS PROCEDURE IS TO ALLOW WORK LOCALLY:
+of allowed hosts for your website. <strong> THIS PROCEDURE IS TO ALLOW WORK LOCALLY</strong>:
 ```
 <file> settings.py
 from decouple import config, Csv
@@ -316,5 +317,63 @@ ALLOWED_HOSTS=localholst, 127.0.0.1:8000/
 >> ALLOWED_HOSTS: ramos-rr-django.herokuapp.com
 ```
 
-- RUN BOTH SERVIDORS<br>
-- 
+- RUN BOTH SERVIDORS to test<br>
+<br>
+13. SET DATABASE ADDRESS IN SETTINGS<br>
+<b>COMMENT1: Django reads a DATABASE as a dictionary with the followed keys:</b><br>
+
+````
+    'NAME': '',
+    'USER': '',
+    'PASSWORD': '',
+    'HOST': '',
+    'PORT': '',
+    'CONN_MAX_AGE': 0
+    'ENGINE': ''}
+````
+
+<b>COMMENT2: LETS CONNECT WITH DB PROVIDED BY HEROKU</b><br>
+- RUN `$ heroku config` to check up if a postgress db has been provided. If not, run `$ heroku addons:docs heroku-postgresql`
+to tell heroku to create a db for your account.<br>
+- It should appear like this:<br>
+
+```
+(curso-django) PS C:\Users\rafae\PycharmProjects\curso-django> heroku config
+=== ramos-rr-django Config Vars
+ALLOWED_HOSTS:         ramos-rr-django.herokuapp.com
+DATABASE_URL:          postgres://....
+DISABLE_COLLECTSTATIC: 1
+SECRET_KEY:            <secret_key>
+```
+
+- Go to `settings.py` in your django-project, and begin to switch DATABASES default values to indicate your new database:<br>
+```
+<file> settings.py
+[ORIGINAL DATABASE SETTINGS]
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3', 
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3')
+    }
+}
+
+[NEW DATABASE SETTINGS]
+default_db_url = 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')  # See OBS1
+parse_database = partial(default_db_url.parse, conn_max_age=600)  # See OBS2 and OBS3
+DATABASES = {
+    'default': config('DATABASE_URL', default=default_db_url, cast=parse_database)
+}  # See OBS4
+```
+
+OBS1: `default_db_url` is where the local db is located;<br>
+OBS2: `parse_databse` is to add a value to the KEY `[CONN_MAX_AGE]`;<br>
+OBS3: `[CONN_MAX_AGE]` serves to indicate (in seconds) the connection duration with database. If the value is not provided,
+it will take a 0 as default. If `None` value is provided, the duration will be limitless.<br>
+OBS4: The fist parameter `'DATABASE_URL` is to tell Django to search in `.env` file for a valid database url, transform 
+the String into a dictionary. If any valid url is found, the system will take the `default` parameter (`default_base_url`) as a database, and is goint to transform it 
+in a dictionary as well. Finally, the last parameter `cast` is to add the KEY`[CONN_MAX_AGE]` in database dictionary,
+even if it hasn't found any external db.url.<br>
+<br>
+
+14. MANAGE POSTGRESS DATABASE<br>
+- INSTALL the library PSYCOPG2: `pipenv install psycopg2-binary`<br>
