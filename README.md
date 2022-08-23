@@ -1,6 +1,7 @@
 # curso-django
-Repository related to Django learning
+Repository related to Django learning, base on DevPro classes.
 
+## I. CONTINUOUS COMMITMENT
 ### 1. SETING UP PIPENV<br>
 - In windows, create inside the project files a folder named `.venv`. Then, command `pip install pipenv` if your main 
 Python doesn't have pipenv already installed, and finally order `pipenv install`. See that PIPENV wil install inside the
@@ -210,6 +211,7 @@ def test_status_code(client: Client):
 <b>Comments: Since TRAVIS has not been used due to its fees, CI was implemented using GITHUB ACTIONS<br></b>
 <br> 
 
+## II. PROJECT SET UP
 ### 10. DECOUPLE<br>
 <b>Comments: To avoid your website giving more information than necessary to outsiders, it worth it to use the library 
 PYTHON-DECOUPLE</b>. Therefore, locally you can leave DEBUG=True to help you track down any error during the development
@@ -384,6 +386,8 @@ even if it hasn't found any external db.url.<br>
 ### 14. MANAGE POSTGRESS DATABASE<br>
 - INSTALL the library PSYCOPG2: `pipenv install psycopg2-binary`<br>
 <br>
+
+## III. STATIC FILES AND FILES UPLOAD
 ### 15. STATIC FILE AND UPLOAD DIRECTORY IN DJANGO<br>
 <b>COMMENT: Static files are those that don't change. Basically, HTTP has a structure that needs to repeat everytime. 
 Thus, django-server have to go collect these staticfiles within its own system to be able to fill all requests</b><br>
@@ -517,5 +521,22 @@ e. Recieve the answer `130 static files copied.`. Well done!<br>
 `$ pipenv install Collectfast`;<br>
 - EDIT `settings.py` to Add `collectfast` as one of the INSTALLED_APPS BEFORE `django.contrib.staticfiles`, OTHERWISE 
 an error will occur;<br>
-- EDIT `settings.py` again, adding `COLLECTFAST_ENABLED = False` for local development, but 
-`COLLECTFAST_ENABLED = True` when the system access the AWS sequence!
+- EDIT `settings.py` again, adding:<br>
+
+```
+<file> settings.py
+
+COLLECTFAST_ENABLED = False
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+COLLECTFAST_STRATEGY = 'collectfast.strategies.boto3.Boto3Strategy
+
+# STORAGE CONFIGURATION IN S3 AWS
+# ----------------------------------------------------------------------------------
+if AWS_ACCESS_KEY_ID:  # IF THERE'S AN KEY_ID, THEN WE HAVE TO UPLOAD OUR FILES
+    ...
+    COLLECTFAST_ENABLED = True
+```
+
+## MIGRATIONS AND USER CUSTOMIZATION
+### 20. OVERWRITING AN USER CLASS
+
