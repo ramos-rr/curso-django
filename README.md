@@ -377,3 +377,63 @@ even if it hasn't found any external db.url.<br>
 
 14. MANAGE POSTGRESS DATABASE<br>
 - INSTALL the library PSYCOPG2: `pipenv install psycopg2-binary`<br>
+<br>
+15. STATIC FILE AND UPLOAD DIRECTORY IN DJANGO<br>
+<b>COMMENT: Static files are those that don't change. Basically, HTTP has a structure that needs to repeat everytime. 
+Thus, django-server have to go collect these staticfiles within its own system to be able to fill all requests</b><br>
+NOTE: Django provides basic staticfiles so that you don't have to depend on external servers to begin your development.<br>
+
+- EDIT `settings.py` to add STATIC_ROOT right below STATIC_URL: `STATIC_ROOT = os.path.join(BASE_DIR / 'statcfiles')`
+- RUN `$pipenv shell / $ python manage.py collectstatic`. Check if it worked like written below:<br>
+
+```
+PS C:\Users\rafae\PycharmProjects\curso-django> python manage.py collectstatic
+
+130 static files copied to 'C:\Users\rafae\PycharmProjects\curso-django\statcfiles'.
+PS C:\Users\rafae\PycharmProjects\curso-django> 
+```
+
+- IN ORDER TO UPLOAD STUFS, you need to set up two more path in `settings.py`: `MEDIA_URL = 'media/'` and
+`MEDIA_ROOT = os.path.join(BASE_DIR / 'mediafiles')`<br>
+- Everything shoul look like this:<br>
+ 
+```
+<file> settings.py
+
+# configuração de ambiente de desenvolvimento
+STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR / 'statcfiles')
+MEDIA_URL = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR / 'mediafiles')
+```
+<br>
+
+16. CREATE AN ACCOUNT AT AWS<br>
+<b>COMMENT: Heroku é um servidor cujo objetivo é processar requisições. Por conta disso, e tb de segurança, ele não 
+permite que vc escreva arquivos no servidor.<br>
+Django tb tem objetivo de tratar requisições e até ela chegar em sua view, muito processamento é feito. Seria um 
+desperdicio de recurso processar todas camadas para sempre entregar arquivos que não mudam, ou seja, são estáticos.
+Por conta disso, o Django não serve arquivos estáticos se vc não está em modo debug True. Ou seja, ele só serve 
+estático no seu ambiente local para não ter o trabalho de colocar os estáticos em algum outro lugar quando estiver 
+desenvolvendo localmente.<br>
+Juntando os dois pontos, a boa prática é vc colocar seus arquivos em um serviço otimizado para sempre entregar arquivos
+estáticos. Esse serviço se chama CDN (Content Delivery Network). O S3, da AWS, é um exemplo desse CDN.
+</b><br>
+- Create an account at [AmazonWebServices](https://aws.amazon.com/pt/)<br>
+- GO to _Identity and Access Management_ (IAM) service<br>
+- Create a USER using `AmazonS3FullAccess` policy
+- COPY the secret_key_id to `.env` file:<br>
+
+```
+<file> .env
+DEBUG=True
+SECRET_KEY='CHAVE SECRETA'
+ALLOWED_HOSTS='127.0.0.1'
+AWS_ACCESS_KEY_ID=AK.....742
+AWS_SECRET_ACCESS_KEY=Tr....Pxj
+```
+<br>
+
+17. CREATE AND CONFIG S3 AT AWS<br>
+<b>COMMENT: It's a bucket to store all files to be uploaded</b><br>
+- 
