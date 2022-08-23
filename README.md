@@ -1,14 +1,15 @@
 # curso-django
 Repository related to Django learning
 
-1. SETING UP PIPENV<br>
+### 1. SETING UP PIPENV<br>
 - In windows, create inside the project files a folder named `.venv`. Then, command `pip install pipenv` if your main 
 Python doesn't have pipenv already installed, and finally order `pipenv install`. See that PIPENV wil install inside the
 `.venv` folder (within project's files) your Virtual Environment.
 - Never forget about all dependencies that the projetc may have. Thus, order the cmd `pipenv sync` and/or `pipenv sync -d`
 in order to install all requerements needed.
 <br><br>
-2. STARTING A PROJETC WITH DJANGO-ADMIN
+
+### 2. STARTING A PROJETC WITH DJANGO-ADMIN
 - Type `django-admin startproject pypro[proj_name] .[place_to_root_file_manage.py]` (_the DOT indicates projetc's rootfolder_)<br>
 - See that the django project must have been created where it was supposed to with the followed structure:<br>
 
@@ -68,17 +69,19 @@ Available subcommands:
     findstatic
     runserver
 ````
-<br><br>
+
 - CREATE AN ALIAS:<br>
   - There's a need to implement alias to run django server anywhere. Basically, what is does is to 
   find and run `manage.py` (stored inside project's root) even if you are working in another folder, turning it simple 
   to run and test you app.<br>
   <br>
-3. INSTALLING HEROKU<br>
+
+### 3. INSTALLING HEROKU<br>
 - Install HEROKU for WIN64;<br>
 - Activate through cmdlet `heroku login`
 <br><br>
-4. UPLOADING FIRST THING ONLINE<br>
+
+### 4. UPLOADING FIRST THING ONLINE<br>
 - Change `settings.py <from> ALLOWED_HOSTS = [] <to> ALLOWED_HOSTS = ['0']`. This way, every HOST is allowed<br>
 - Create `Procfile` in main root. Edit it: `web: gunicorn pypro.wsgi --log-file -`. It serves to indicate heroku the WSGI to use `<br>
 - Install GUNICORN with PIPENV to make it a basic requerement: `pipenv install gunicorn`, that's part of WISG mentioned above<br>
@@ -113,7 +116,7 @@ remote:        https://ramos-rr-django.herokuapp.com/ deployed to Heroku
 ```
 <br>
 
-5. AUTOMATIC DEPLOY<br>
+### 5. AUTOMATIC DEPLOY<br>
 <strong>Comments: The idea here is to avoid different versions of the same application, mostly when it comes to be developed by two or
 more team member.</strong><br>
 5.1. First, login to [heroko website](https://id.heroku.com/);<br>
@@ -121,7 +124,8 @@ more team member.</strong><br>
 5.3. Certify to pick Github as main connection, indicanting your repository address;<br>
 5.4. Enable <i>AUTOMATIC DEPLOY</i><br>
 <br><br>
-6. RUN DJANGO SERVER IN PYCHARM<br>
+
+### 6. RUN DJANGO SERVER IN PYCHARM<br>
 <b>Comments: By doing this, you can debug an executing code.</b><br>
 6.1. At the top of the screen, there's a litle box, with the Python logo inside, appointing to the actual server that 
 is being used. Click edit, and inside RUN/DEBUG CONFIGURATION, Add a new one, by selecting Python as MAIN, then rename
@@ -130,7 +134,8 @@ the unknown to DJANGO (or as desired). Continue by indicating the path (select M
 <br>
 <b>Note that this new settings will appear above as a RUN OPTION</b><br>
 <br><br>
-7. UPLOAD FIRST HOME TO DJANGO SERVER<br>
+
+### 7. UPLOAD FIRST HOME TO DJANGO SERVER<br>
 - FIRST: in the terminal, go to the app_folder (Created in Item 2.), then run `manage.py startapp base[app_name]`.
 Attention! You need to create inside the project that you've set up with DJANGO!.<br>
 <strong> Don't forget to use alias to call `manage.py` from root files</strong>
@@ -174,7 +179,8 @@ APPEND IN `INSTALLED_APPS = []` your app's path, e.g., `INSTALLED_APPS = [..., '
 `urlpatterns = [path('', home),]`. Because `home` is a function, you have to rightly import: `from pypro.base.views import home`<br>
 - RUN IT<br>
 <br>
-8. PYTEST-DJANGO<br>
+
+### 8. PYTEST-DJANGO<br>
 <b>Comments: Once of the most important enhencement one can provide is to make sure everything is testable. So, lets 
 implement <i>pytest-django</i> plugin using pipenv in the terminal: `$ pipenv install 'pytest-django'`.<br></b>
 - SET UP PYTEST by creating a file named `pytest.ini` inside the project main root files:
@@ -200,11 +206,11 @@ def test_status_code(client: Client):
 ```
 <br>
 
-9. IMPLEMENT GITHUB ACTION TO RUN AUTOTESTS<br>
+### 9. IMPLEMENT GITHUB ACTION TO RUN AUTOTESTS<br>
 <b>Comments: Since TRAVIS has not been used due to its fees, CI was implemented using GITHUB ACTIONS<br></b>
 <br> 
 
-10. DECOUPLE<br>
+### 10. DECOUPLE<br>
 <b>Comments: To avoid your website giving more information than necessary to outsiders, it worth it to use the library 
 PYTHON-DECOUPLE</b>. Therefore, locally you can leave DEBUG=True to help you track down any error during the development
 process<br>
@@ -246,7 +252,7 @@ The requested resource was not found on this server.
 ````
 <br>
 
-11. SECRET KEY SETTING<br>
+### 11. SECRET KEY SETTING<br>
 COMMENT: A secret key serves as a cryptograph value for sign in sessions, messages, password reset, and on;<br>
 - EDIT: `setings.py >> SECRET_KEY = config('SECRET_KEY')`;<br>
 - EDIT: `.env >> (+ line) SECRET_KEY=CHAVE SECRETA`;<br>
@@ -269,7 +275,7 @@ SECRET_KEY:            <secret_key>
 ```
 <br>
 
-12. DOMAIN AND ALLOWED HOSTS<br>
+### 12. DOMAIN AND ALLOWED HOSTS<br>
 - DOMAIN is you website address. Allways check up before cast a domain to avoid an already existing domain: [REGISTRO.BR](https://registro.br).
 Remember that DOMAIN is just the final part of an web address, e.g. `pythonpro.com.br`.
 - IF AVALIABLE, you can purchase it directly from a HOST that is going to manage this DOMAIN. Hosts example: [DreamHost](https://www.dreamhost.com/),
@@ -319,7 +325,7 @@ ALLOWED_HOSTS=localholst, 127.0.0.1:8000/
 
 - RUN BOTH SERVIDORS to test<br>
 <br>
-13. SET DATABASE ADDRESS IN SETTINGS<br>
+- ### 13. SET DATABASE ADDRESS IN SETTINGS<br>
 <b>COMMENT1: Django reads a DATABASE as a dictionary with the followed keys:</b><br>
 
 ````
@@ -375,10 +381,10 @@ in a dictionary as well. Finally, the last parameter `cast` is to add the KEY`[C
 even if it hasn't found any external db.url.<br>
 <br>
 
-14. MANAGE POSTGRESS DATABASE<br>
+### 14. MANAGE POSTGRESS DATABASE<br>
 - INSTALL the library PSYCOPG2: `pipenv install psycopg2-binary`<br>
 <br>
-15. STATIC FILE AND UPLOAD DIRECTORY IN DJANGO<br>
+### 15. STATIC FILE AND UPLOAD DIRECTORY IN DJANGO<br>
 <b>COMMENT: Static files are those that don't change. Basically, HTTP has a structure that needs to repeat everytime. 
 Thus, django-server have to go collect these staticfiles within its own system to be able to fill all requests</b><br>
 NOTE: Django provides basic staticfiles so that you don't have to depend on external servers to begin your development.<br>
@@ -408,17 +414,20 @@ MEDIA_ROOT = os.path.join(BASE_DIR / 'mediafiles')
 ```
 <br>
 
-16. CREATE AN ACCOUNT AT AWS<br>
-<b>COMMENT: Heroku é um servidor cujo objetivo é processar requisições. Por conta disso, e tb de segurança, ele não 
-permite que vc escreva arquivos no servidor.<br>
-Django tb tem objetivo de tratar requisições e até ela chegar em sua view, muito processamento é feito. Seria um 
-desperdicio de recurso processar todas camadas para sempre entregar arquivos que não mudam, ou seja, são estáticos.
-Por conta disso, o Django não serve arquivos estáticos se vc não está em modo debug True. Ou seja, ele só serve 
-estático no seu ambiente local para não ter o trabalho de colocar os estáticos em algum outro lugar quando estiver 
-desenvolvendo localmente.<br>
-Juntando os dois pontos, a boa prática é vc colocar seus arquivos em um serviço otimizado para sempre entregar arquivos
-estáticos. Esse serviço se chama CDN (Content Delivery Network). O S3, da AWS, é um exemplo desse CDN.
-</b><br>
+### 16. CREATE AN ACCOUNT AT AWS<br>
+COMMENT: Heroku is a server that process requests. Due to this, and to security issues, it doesn’t allow that you write 
+new files in its server.<br>
+Django has also the attribution to treat requests until it reaches the `view.py` file, and a lot of processes is done 
+in this path. It would be a waste of resources to process all these layers over and over just to deliver you the 
+same statics files (that never change).<br>
+Therefore, Django does not provide static files if you are not running as <b>DEBUG=True</b>. In other words, it 
+only provides static files in your local environment, so you don’t have to put these files elsewhere during the
+development.<br>
+Connecting these two points, it’s a good practice to set up your files inside a dedicated place that optimizes the 
+deliverance of those static files. This is the so called CDN service (Content Delivery Network).<br>
+Thus, _S3_, from AWS, is a nice place and a great example of CDN.<br>
+(Renzo Nutiteli, 2020.)<br>
+<br>
 - Create an account at [AmazonWebServices](https://aws.amazon.com/pt/)<br>
 - GO to _Identity and Access Management_ (IAM) service<br>
 - Create a USER using `AmazonS3FullAccess` policy
@@ -434,6 +443,61 @@ AWS_SECRET_ACCESS_KEY=Tr....Pxj
 ```
 <br>
 
-17. CREATE AND CONFIG S3 AT AWS<br>
+### 17. CREATE AND CONFIG S3 AT AWS<br>
 <b>COMMENT: It's a bucket to store all files to be uploaded</b><br>
-- 
+- Create a type S3 (Scalable Storage in the Cloud);<br>
+- Name it;<br>
+- Apply a new POLICY. <b>TAKE A LOOK AT A BUCKET POLICY EDITOR ARN.</b> To make a new policy, go to [AWS Policy Generator](https://awspolicygen.s3.amazonaws.com/policygen.html)<br>
+a. Select S3_Bucket_Policy type;<br>
+b. Select ALLOW as effect;<br>
+c. Copy ARN from the USER and paste it as the PRINCIPAL. You need to go back in AWS > USER and find it;<br>
+d. Select ALL ACTIONS;<br>
+e. Copy and Paste ARN from s3_Bucket;<br>
+f. Submit it and COPY yhe JSON code generate automatically;<br>
+g. Paste this code in AWS as a new POLICY (make sure that the first caracter is `{` instead of a blank space, otherwise
+it will return an error).<br>
+
+### 18. CONFIG LIB DJANGO_S3_FOLDER_STORAGE
+<b>COMMENT: This library is to help upload your files to AWS.</b><br>
+- Install: `pipenv install django-s3-folder-storage`
+- Now, lets config our connection between LOCAL and AWS:
+a. In `settings.py`, create an IF to certify that we have a valid AWS_ACCESS_KEY_ID;<br>
+b. IF POSITIVE, add the other AWS parameters to make it right. It should look like the followed:<br>
+
+```
+<file> settings.py
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')  # a.
+# STORAGE CONFIGURATION IN S3 AWS
+if AWS_ACCESS_KEY_ID:  # b. IF THERE'S AN KEY_ID, THEN WE HAVE TO UPLOAD OUR FILES
+    AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
+    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400', }
+    AWS_PRELOAD_METADATA = True
+    AWS_AUTO_CREATE_BUCKET = False
+    AWS_QUERYSTRING_AUTH = True
+    AWS_S3_CUSTOM_DOMAIN = None
+    AWS_DEFAULT_ACL = 'private'
+
+    # Static Assets
+    # ----------------------------------------------------------------------------------
+    STATICFILES_STORAGE = 's3_folder_storage.s3.StaticStorage'
+    STATIC_S3_PATH = 'static'
+    STATIC_ROOT = f'/{STATIC_S3_PATH}'
+    STATIC_URL = f'//s3.amazonaws.com/{AWS_STORAGE_BUCKET_NAME}/{STATIC_S3_PATH}'
+    ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
+
+    # Upload Media Folder
+    # ----------------------------------------------------------------------------------
+    DEFAULT_FILE_STORAGE = 's3_folder_storage.s3.DefaultStorage'
+    DEFAULT_S3_PATH = 'media'
+    MEDIA_ROOT = f'/{DEFAULT_S3_PATH}'
+    MEDIA_URL = f'//s3.amazonaws.com/{AWS_STORAGE_BUCKET_NAME}/{DEFAULT_S3_PATH}'
+
+    INSTALLED_APPS.append('s3_folder_storage')
+    INSTALLED_APPS.append('storages')
+```
+
+c. SHELL PIPENV: `$ pipenv shell`<br>
+d. TELL DJANGO NOT TO ASK TO UPLOAD FILES, leting to allways upload as default: 
+`$ python manage.py collectstatic --no-input`. Submit!<br>
+e. Recieve the answer `130 static files copied.`. Well done!<br>
