@@ -501,3 +501,22 @@ c. SHELL PIPENV: `$ pipenv shell`<br>
 d. TELL DJANGO NOT TO ASK TO UPLOAD FILES, leting to allways upload as default: 
 `$ python manage.py collectstatic --no-input`. Submit!<br>
 e. Recieve the answer `130 static files copied.`. Well done!<br>
+<br>
+
+### 19. OPTIMIZE UPLOADS WITH COLLECTFAST
+- HEROKU must remove DISABLE_COLLECTSTATIC;<br>
+- HEROKU must get all AWS key to access it:<br>
+```
+<terminal> $ heroku config:unset DISABLE_COLLECTSTATIC
+<terminal> $ heroku config:set AWS_ACCESS_KEY_ID=<your_key>
+<terminal> $ heroku config:set AWS_SECRET_ACCESS_KEY=<your_key>
+<terminal> $ heroku config:set AWS_STORAGE_BUCKET_NAME=<your_bucket_name>
+```
+
+- Install COLLECTFAST to upload only those files that have been modified, avoiding delays in deployments:
+`$ pipenv install Collectfast`;<br>
+- EDIT `settings.py` to Add `collectfast` as one of the INSTALLED_APPS BEFORE `django.contrib.staticfiles`, OTHERWISE 
+an error will occur;<br>
+- EDIT `settings.py` again, adding `COLLECTFAST_ENABLED = False` for local development, but 
+`COLLECTFAST_ENABLED = True` when the system access the AWS sequence!
+
