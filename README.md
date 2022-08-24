@@ -522,9 +522,7 @@ e. Recieve the answer `130 static files copied.`. Well done!<br>
 - EDIT `settings.py` to Add `collectfast` as one of the INSTALLED_APPS BEFORE `django.contrib.staticfiles`, OTHERWISE 
 an error will occur;<br>
 - EDIT `settings.py` again, adding:<br>
-
-```
-<file> settings.py
+````<file> settings.py
 
 COLLECTFAST_ENABLED = False
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
@@ -535,8 +533,263 @@ COLLECTFAST_STRATEGY = 'collectfast.strategies.boto3.Boto3Strategy
 if AWS_ACCESS_KEY_ID:  # IF THERE'S AN KEY_ID, THEN WE HAVE TO UPLOAD OUR FILES
     ...
     COLLECTFAST_ENABLED = True
+````
+<br>
+
+## IV. MIGRATIONS AND USER CUSTOMIZATION
+### 20. OVERWRITING AN USER CLASS
+<b>COMMENT:</b> Django documentation highly recommend that you set up a new User Model, even though it already provides 
+a standard user to use. That's because when managing with migrations (next subject), these standard users will be 
+more difficult to integrate with outer systems, and even harder to change in the midle of the project.<br>
+- CREATE `models.py` module in app base (heroku created app): `C:\Users\rafae\PycharmProjects\curso-django\pypro\base\models`;<br>
+- Look for the `class AbstractUser(AbstractBaseUser, PermissionsMixin):` in `auth\models.py` from django intern modules;<br>
+- Apply the changes as desired.<br>
+a. Change class name to User;<br>
+b. Import AbstractBaseUser from django.contrib.auth.base_user and PermissionsMixin from django.contrib.auth.models;<br>
+c. Change the Docstring;<br>
+d. Delete username_validator and all related files, since your user will be an email;<br>
+e. Import models from django.db;<br>
+f. Import gettext_lazy as _ from django.utils.translation;<br>
+g. Remove `last_name` line, since your user will be an email;<br>
+h. switch `email = models.EmailField(_("email address"), blank=True)` to `email = models.EmailField(_("email address"), unique=True)`
+to tell system that it must accept unique emails only;<br>
+i. Import timezone from django.utils;<br>
+j. Switch off objects = UserManager() for now (add it as commentary);<br>
+k. Alter `USERNAME_FIELD = 'username'` to `USERNAME_FIELD = 'email'`, since your user will be an email;<br>
+l. remove `abstract = True` from `class Meta`:
+- followed file model:<br>
+
+```
+from django.utils import timezone
+from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.models import PermissionsMixin
+from django.utils.translation import gettext_lazy as _
+from django.core.mail import send_mail
+from django.db import models
+
+
+class User(AbstractBaseUser, PermissionsMixin):
+    """
+    App base User class
+
+    Email and password are required. Other fields are optional.
+    """
+
+    first_name = models.CharField(_("first name"), max_length=150, blank=True)
+    email = models.EmailField(_("email address"), unique=True)
+    # is_staff if to iddentify users able to accesse django-adimn settings
+    is_staff = models.BooleanField(
+        _("staff status"),
+        default=False,
+        help_text=_("Designates whether the user can log into this admin site."),
+    )
+    # is_active deffine Users that can login the system
+    is_active = models.BooleanField(
+        _("active"),
+        default=True,
+        help_text=_(
+            "Designates whether this user should be treated as active. "
+            "Unselect this instead of deleting accounts."
+        ),
+    )
+    # date_joined deffines when User joined the system
+    date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
+
+    # objects = UserManager()
+
+    EMAIL_FIELD = "email"
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ["email"]
+
+    class Meta:
+        verbose_name = _("user")
+        verbose_name_plural = _("users")
+
+    def clean(self):
+        super().clean()
+        self.email = self.__class__.objects.normalize_email(self.email)
+
+    def get_full_name(self):
+        """
+        Return the first_name plus the last_name, with a space in between.
+        """
+        full_name = '%s' % self.first_name
+        return full_name.strip()
+
+    def get_short_name(self):
+        """Return the short name for the user."""
+        return self.first_name
+
+    def email_user(self, subject, message, from_email=None, **kwargs):
+        """Send an email to this user."""
+        send_mail(subject, message, from_email, [self.email], **kwargs)
+
+```
+<br>
+
+### 21. CREATING A MANAGER FOR USERS<br>
+<b>COMMENT: Django documentation says that if you have created a USER using fields from the system, it is possible
+to simply use UserManager to manage all users</b><br>
+- Create a `classe UserManager` to handle all incoming users, enheriting `BaseUserManager`;<br>
+- Create functions to create new user and create new superuser(for special authorizations);<br>
+- Is should look like this:<br>
+
+```
+class UserManager(BaseUserManager):
+    use_in_migrratios = True
+
+    def _create_user(self, email, password, **extra_fields):
+        """
+        Creates ans servs a User with the given email and password.
+        :param email: User email that will be user for login
+        :param password: Key to be used at he login
+        :param extra_fields: Any other information retaleted to the User
+        :return: User()
+        """
+        if not email:
+            raise ValueError('The given email must be set')
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.sale(using=self._db)
+        return user
+
+    def create_user(self, useremail: str, password=None, **extra_fields: any):
+        extra_fields.setdefault('is_superuser', False)
+        return self._create_user(useremail, password, **extra_fields)
+
+    def create_superuser(self, useremail: str, password=None, **extra_fields: any):
+        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('is_staff', True)
+
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser must have is_superuser=True')
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Superuser must have is_staff=True')
+
+        return self._create_user(useremail, password, **extra_fields)
 ```
 
-## MIGRATIONS AND USER CUSTOMIZATION
-### 20. OVERWRITING AN USER CLASS
+- Switch on `objects = UserManager()` in `class User` below to make the connection between User and Manager;<br>
+<br>
+
+### 22. MAKEMIGRATION COMMAND<br>
+<b>COMMENT: It's time to makemigration. You should migrate `base` app now to get ready for launch</b><br>
+- RUN `$ pipenv shell` / `$ python manage.py makemigration`. It must return the follwed message:<br>
+
+````
+Migrations for 'base':
+  pypro\base\migrations\0001_initial.py
+    - Create model User
+````
+
+- IF AN ERROR OCCUR, it may be fixed by following the hints from the terminal;
+- IF Nothing happens, instead, is because django hasn't used the right APP path. You can see which contents django is
+using typing `$ python manage.py showmigrations`:<br>
+
+```
+<terminal> $ python manage.py showmigrations
+admin
+ [ ] ...
+auth
+ [ ] ...
+contenttypes
+ [ ] ...
+sessions
+ [ ] ...
+```
+
+- See that the APP name is not there! Thus, to fix it, type `python manage.py makemigrations base[<APP_name.>]`:<br>
+- It should work, and if you ask for showmigrations again, you must get:<br>
+
+```
+<terminal> $ python manage.py showmigrations
+admin
+ [ ] ...
+auth
+ [ ] ...
+base
+ [ ] ...
+contenttypes
+ [ ] ...
+sessions
+ [ ] ...
+```
+
+- FINALLY, check inside `/migrations/` for the first migration created `0001_initial.py`. Reading it, you are going to 
+notice that all fields for your database have been created!
+<br><br>
+
+### 23. DATABASE CONNECTIONS AND MIGRATIONS
+<b>COMMENT: </b><br>
+- RUN `$ pipenv shell` / `$ python manage.py createsuperuser` to create a superuser required to manage other users;<br>
+- See in DB if it has been createde!
+<br><br>
+
+### 24. USER ADMIN<br>
+- Run django-server and access local/server;<br>
+- entre a slash "/" `admin` at the end of address or [click here](http://127.0.0.1:8000/admin)<br>
+- Entre with superuser account (created in the previous topic);<br>
+- SEE that the dashboard only shows GROUP to manage, but it should bring USERS as well. This has happened because we 
+changed the default user. Therefore, lets do some ajustments;<br>
+a. First, search for the builtin `class UserAdmin` inside django: `django.contrib.auth.admin`;<br>
+b. COPY the whole module and paste it inside the APP `admin.py`;<br>
+c. Time to Overwrite the standard class by fixing those fields that have been changed, such as `username` and `email`. 
+In the end, it should look as below:<br>
+
+```
+<file> pypro/base/admin.py
+import...
+
+csrf_protect_m = method_decorator(csrf_protect)
+sensitive_post_parameters_m = method_decorator(sensitive_post_parameters())
+
+
+@admin.register(User)  # OBS1
+class UserAdmin(admin.ModelAdmin):
+    add_form_template = "admin/auth/user/add_form.html"
+    change_user_password_template = None
+    fieldsets = (
+        (None, {"fields": ("first_name", "email", "password")}),
+        (
+            _("Permissions"),
+            {
+                "fields": (
+                    "is_active",
+                    "is_staff",
+                    "is_superuser",
+                    "groups",
+                    "user_permissions",
+                ),
+            },
+        ),
+        (_("Important dates"), {"fields": ("last_login", "date_joined")}),
+    )
+    add_fieldsets = (
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": ("first_name", "email", "password1", "password2"),
+            },
+        ),
+    )
+    form = UserChangeForm
+    add_form = UserCreationForm
+    change_password_form = AdminPasswordChangeForm
+    list_display = ("email", "first_name", "is_staff")
+    list_filter = ("is_staff", "is_superuser", "is_active", "groups")
+    search_fields = ("first_name", "email")
+    ordering = ("first_name",)
+    filter_horizontal = (
+        "groups",
+        "user_permissions",
+    )
+```
+
+#### OBS1: To make sure that the @admin.register(User) don't take the AbstractClass as model, it is necessary to:<br>
+i. ELIMINATE `from django.contrib.auth.models import Group, User`;<br>
+ii. ADD `from pypro.base.models import User`, that is your model from your app!<br>
+- REFRESH the server and accesse ADMIN again: [click here](http://127.0.0.1:8000/admin)<br>
+<br>
 
