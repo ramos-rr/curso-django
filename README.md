@@ -792,4 +792,5 @@ i. ELIMINATE `from django.contrib.auth.models import Group, User`;<br>
 ii. ADD `from pypro.base.models import User`, that is your model from your app!<br>
 - REFRESH the server and accesse ADMIN again: [click here](http://127.0.0.1:8000/admin)<br>
 <br>
-
+### 25. SET UP AUTOMATIC DATABASE UPLOAD FROM LOCAL TO HEROKU'S POSTGRES
+- EDIT `Pocfile`, and add in the first line: `release: python manage.py migrate --noinput`
